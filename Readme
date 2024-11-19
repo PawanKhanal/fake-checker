@@ -1,0 +1,96 @@
+# Image Tampering Detection App
+
+This application detects whether an uploaded image is tampered with by comparing it to a pre-stored original image. It uses **Python**, **Flask**, and **Pillow** for backend processing.
+
+---
+
+![Python](https://img.shields.io/badge/python-3.8%2B-blue)
+![Flask](https://img.shields.io/badge/flask-2.1-green)
+
+---
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [How to Use](#how-to-use)
+- [File Structure](#file-structure)
+- [Dependencies](#dependencies)
+- [Known Issues](#known-issues)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [Author](#author)
+
+---
+
+## Features
+
+- **Upload Original Image**: Save a reference image for future comparisons.
+- **Check Tampering**: Analyze uploaded images for pixel-level differences.
+- **Easy-to-Use UI**: Intuitive interface for users to upload and view results.
+
+---
+
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- Flask, Pillow libraries
+
+### Steps
+1. Clone this repository:
+   ```bash
+   git clone <repository_url>
+   cd <repository_folder>
+Install dependencies:
+bash
+Copy code
+pip install flask pillow
+Create uploads directory:
+bash
+Copy code
+mkdir uploads
+Run the application:
+bash
+Copy code
+python app.py
+Open the browser at: http://127.0.0.1:5000/
+How to Use
+Upload Original Image
+Navigate to /upload_original.
+Upload an image as a reference (e.g., original.jpg).
+Check Image for Tampering
+Navigate to /upload.
+Upload a new image for analysis.
+View the result ("Tampered" or "Non-Tampered") with the uploaded image.
+File Structure
+csharp
+Copy code
+.  
+├── app.py               # Flask application  
+├── uploads/             # Uploaded images  
+├── templates/           # HTML templates  
+├── static/              # Static files  
+└── README.md            # Documentation  
+Dependencies
+Install with:
+
+bash
+Copy code
+pip install -r requirements.txt
+Example Output
+Tampered Image Result
+
+Known Issues
+Detects only pixel-level differences.
+Requires both images to have the same dimensions.
+Future Improvements
+Add AI-based tampering detection.
+Support multiple original images.
+Contributing
+Feel free to open issues or submit pull requests.
+
+Author
+Pawan Khanal
+
+Email: pawankhanal6@gmail.com
+GitHub: PawanKhanal
