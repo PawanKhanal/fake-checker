@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from PIL import Image, ImageChops
+import hashlib
 import os
 
 app = Flask(__name__)
@@ -15,28 +16,32 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Function to calculate the hash of an image
+def calculate_hash(image_path):
+    with open(image_path, 'rb') as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
 # Function to check if the uploaded image is tampered
 def check_tampering(uploaded_image_path):
     try:
-        # Load the original and uploaded images
         if not os.path.exists(ORIGINAL_IMAGE_PATH):
             return "Original image not found. Please upload it first."
 
-        original = Image.open(ORIGINAL_IMAGE_PATH)
-        uploaded = Image.open(uploaded_image_path)
+        # Calculate hashes for comparison
+        original_hash = calculate_hash(ORIGINAL_IMAGE_PATH)
+        uploaded_hash = calculate_hash(uploaded_image_path)
 
-        # Resize the uploaded image to match the original
-        uploaded = uploaded.resize(original.size)
-
-        # Compare the two images using pixel-by-pixel difference
-        diff = ImageChops.difference(original, uploaded)
-
-        # If there's a difference, the image is tampered
-        if diff.getbbox():  # Bounding box indicates pixel differences
-            return "Tampered"
-        return "Non-Tampered"
+        # Compare the hashes
+        result = "Non-Tampered" if original_hash == uploaded_hash else "Tampered"
+        log_result(uploaded_image_path, result)  # Log the result
+        return result
     except Exception as e:
         return f"Error in tampering check: {e}"
+
+# Function to log tampering results
+def log_result(uploaded_image, result):
+    with open("tampering_log.txt", "a") as log_file:
+        log_file.write(f"File: {uploaded_image}, Result: {result}\n")
 
 # Routes
 @app.route('/')
@@ -57,9 +62,10 @@ def upload_original():
             return redirect(request.url)
 
         if file:
-            # Save the file as the original image
-            file.save(ORIGINAL_IMAGE_PATH)
-            flash("Original image uploaded successfully!")
+            # Save the original image with its filename
+            original_path = os.path.join(app.config['UPLOAD_FOLDER'], f"original_{file.filename}")
+            file.save(original_path)
+            flash(f"Original image {file.filename} uploaded successfully!")
             return redirect(url_for('index'))
     return render_template('upload_original.html')
 
@@ -87,6 +93,13 @@ def upload_file():
             # Pass the static path to the template
             return render_template('upload.html', result=result, image_url=f'uploads/{file.filename}')
     return render_template('upload_file.html')
+
+@app.route('/download_original', methods=['GET'])
+def download_original():
+    if os.path.exists(ORIGINAL_IMAGE_PATH):
+        return redirect(url_for('static', filename='uploads/original.jpg', _external=True))
+    flash("Original image not found!")
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
