@@ -4,13 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        img {
+            max-width: 500px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Image Tampering Check Result</h1>
-    <p>Result: {{ result }}</p>
+    <p>Result: <strong>{{ result }}</strong></p>
     <h2>Uploaded Image:</h2>
-    <img src="{{ url_for('static', filename=image_url) }}" alt="Uploaded Image" style="max-width: 500px; height: auto;">
-    <br><br>
+    <img src="{{ url_for('static', filename=image_url) }}" alt="Uploaded Image">
     <h2>Download Original Image:</h2>
     <a href="/download_original">Download</a>
     <br><br>

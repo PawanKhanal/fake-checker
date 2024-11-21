@@ -1,0 +1,1 @@
+File: static/uploads\tampered_image1.jpg, Result: Tampered
