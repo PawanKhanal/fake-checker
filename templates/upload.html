@@ -11,6 +11,9 @@
     <h2>Uploaded Image:</h2>
     <img src="{{ url_for('static', filename=image_url) }}" alt="Uploaded Image" style="max-width: 500px; height: auto;">
     <br><br>
+    <h2>Download Original Image:</h2>
+    <a href="/download_original">Download</a>
+    <br><br>
     <a href="{{ url_for('index') }}">Go Back to Home</a>
 </body>
 </html>
